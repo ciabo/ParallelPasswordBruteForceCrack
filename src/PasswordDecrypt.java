@@ -14,8 +14,8 @@ public class PasswordDecrypt {
 
     public static void main(String[] args) throws IOException {
         int count = 0;
-        long start = System.nanoTime(); // for sequential program is better to use nanoTime than currentTimeMills()(that is wall-clock time)
-        String fileName="./PswDb/db10000.txt";
+        long start = System.currentTimeMillis(); // for sequential program is better to use nanoTime than currentTimeMills()(that is wall-clock time)
+        String fileName="./PswDb/db100.txt";
         Path path = Paths.get(fileName);
         Scanner scanner = new Scanner(path);
         ArrayList<String> psws = new ArrayList<>();
@@ -30,13 +30,13 @@ public class PasswordDecrypt {
         scanner.close();
         int size=psws.size();
         System.out.println("Num psw: " + size);
-        ExecutorService executor = Executors.newFixedThreadPool(8);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
         Boolean found=false;
         for(int i=0;i<size;i++){
             found=false;
             List<Callable<Object>> todo = new ArrayList<Callable<Object>>();
-            for(int j=1940;j<=2010;j=j+10){
-                DecryptTask task=new DecryptTask(j,j+10,hashes.get(i),found);
+            for(int j=1940;j<=2010;j=j+20){
+                DecryptTask task=new DecryptTask(j,j+20,hashes.get(i),found);
                 todo.add(Executors.callable(task));
             }
             try {
@@ -46,8 +46,8 @@ public class PasswordDecrypt {
             }
         }
         executor.shutdown();
-        long finish = System.nanoTime();
-        long timeelaps = (finish-start)/1000000;
+        long finish = System.currentTimeMillis();
+        long timeelaps = finish-start;
         System.out.println();
         System.out.println("Psw decrypted: " + size + " Time elapsed: " + timeelaps +"ms " + timeelaps/1000 +"s");
     }
