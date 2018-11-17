@@ -31,12 +31,12 @@ public class PasswordDecrypt {
         int size=psws.size();
         System.out.println("Num psw: " + size);
         ExecutorService executor = Executors.newFixedThreadPool(4);
-        Boolean found=false;
+        SharedFlag flag=new SharedFlag(false);
         for(int i=0;i<size;i++){
-            found=false;
+            flag.setFlag(false);
             List<Callable<Object>> todo = new ArrayList<Callable<Object>>();
             for(int j=1940;j<=2010;j=j+10){
-                DecryptTask task=new DecryptTask(j,j+9,hashes.get(i),found);
+                DecryptTask task=new DecryptTask(j,j+9,hashes.get(i),flag);
                 todo.add(Executors.callable(task));
             }
             try {
