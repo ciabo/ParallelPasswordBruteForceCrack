@@ -28,10 +28,13 @@ public class DecryptTask implements Runnable {
                     String yyyy = Integer.toString(y);
                     String psw = yyyy + mm + dd;
                     String hashTest = Crypt.crypt(psw, "parallel");
+                    //Print to control that threads don't overlap.
+                    //safePrintln("Thread: " + Thread.currentThread().getId() + " Psw generated: " + psw);
                     if (this.hash.equals(hashTest)) {
                         this.found.setFlag(true);
                         System.out.println("Thread: " + Thread.currentThread().getId());
                         System.out.println("Psw generated: " + psw + " finds, crypt: " + hashTest);
+                        System.out.println();
                     }
                     d++;
                 }
@@ -40,6 +43,11 @@ public class DecryptTask implements Runnable {
             }
             m = 1;
             y++;
+        }
+    }
+    public void safePrintln(String s) {
+        synchronized (System.out) {
+            System.out.println(s);
         }
     }
 }

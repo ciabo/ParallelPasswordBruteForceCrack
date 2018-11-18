@@ -15,7 +15,7 @@ public class PasswordDecrypt {
     public static void main(String[] args) throws IOException {
         int count = 0;
         long start = System.currentTimeMillis(); // for sequential program is better to use nanoTime than currentTimeMills()(that is wall-clock time)
-        String fileName="./PswDb/db1000.txt";
+        String fileName="./PswDb/db100.txt";
         Path path = Paths.get(fileName);
         Scanner scanner = new Scanner(path);
         ArrayList<String> psws = new ArrayList<>();
